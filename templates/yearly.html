@@ -1,0 +1,5 @@
+{% import 'calendar.html' as calendas %} {% extends 'base_planner.html' %}
+{%block title %}Yearly Calendar{% endblock %} {% block content %}
+<h2>Yearly Calendar</h2>
+<div class="calendar">{{ calendas.calendar(year) }}</div>
+{% endblock %}
