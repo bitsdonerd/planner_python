@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import calendar
 
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__)
 
 # calendar
 full_month = [
@@ -26,44 +26,45 @@ week_day = [i[0] for i in week_list]
 hours = ["{:02d}:00".format(i) for i in range(7, 22)]
 
 # format the days and weeks
-def get_calendar(mm,yy):
+def get_calendar(mm, yy):
     cal = calendar.month(yy, mm).split("\n")[2:-1]
-    dict_days = {i*3 + 1: i for i in range(7)}
-    day_position = (cal[0].find('1'))
-    first_day = dict_days[day_position]
+
+    pos_primeiro_dia = (cal[0].find('1'))
+    dict_position_to_days = {i*3 + 1: i for i in range(7)}
+    first_day = dict_position_to_days[pos_primeiro_dia]
     last_day = int(cal[-1].split(" ")[-1])
 
     day_check = 0
     list_cal = [[]]
     pair_day = []
     day = 1
-    i = 0
-
-    while day <= last_day:
+    i =0
+    while day < last_day + 1:
         if day_check == 0 and i < first_day:
-            list_cal[-1].append({'day':' '})
+            list_cal[-1].append({'day': ' '})
             i += 1
         else:
             day_check = 1
             pair_day += [{
-                'wkd': week_day[len(list_cal[-1]) % 7],
-                'day': str(day),
-                'full_wkd': week_list[len(list_cal[-1]) % 7],
+                'wkd': week_day[len(list_cal[-1])], 
+                "day": str(day),
+                'full_wkd': week_list[len(list_cal[-1])], 
                 'month': mm
-            }]
-            list_cal[-1].append({'day':day, 'link': '{}-{}'.format( mm, day)})
+                }]
+            list_cal[-1].append({'day': day, 'link': '{}-{}'.format(day, mm)})
             day += 1
 
-    if len(list_cal[-1]) >= 7:
-        list_cal.append([])
+        if len(list_cal[-1]) >= 7:
+            list_cal.append([])
+    
+    return [s_months[mm - 1], list_cal, pair_day, week_day]
 
-    return [s_months[mm-1], list_cal, pair_day, week_day]
-
-cal = get_calendar(1, 2021)
 
 # Render page
 def render_page():
-    template = render_template('base_planner.html')
+    template = ''
+    template += render_template('yearly.html', cal=[get_calendar(i, 2025) for i in range(1, 13)])
+    template += render_template('daily.html', anchor="1-1")
     return template
 
 # Route Decorator 

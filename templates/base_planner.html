@@ -11,31 +11,16 @@
     />
   </head>
   <body>
-    <header>
-      <h1>My Planner</h1>
-      <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/calendar">Calendar</a></li>
-          <li><a href="/tasks">Tasks</a></li>
-        </ul>
-      </nav>
-    </header>
-
     <div class="wrapper">
       <div class="container--fluid" id="main-content">
-        {% block test %}{% endblock %}
+        {% block main_block %}{% endblock %}
       </div>
     </div>
 
-    <div class="footer">
-      <div></div>
-    </div>
+    <div class="footer"></div>
 
     <footer>
       <p>&copy; 2024 My Planner. All rights reserved.</p>
     </footer>
-
-    <script src="../static/js/main.js"></script>
   </body>
 </html>
